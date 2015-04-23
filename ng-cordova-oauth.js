@@ -517,7 +517,7 @@
              * @param    string clientSecret
              * @return   promise
              */
-            twitter: function(clientId, clientSecret) {
+            twitter: function(clientId, clientSecret, accessToken, accessSecret) {
                 var deferred = $q.defer();
                 if(window.cordova) {
                     var cordovaMetadata = cordova.require("cordova/plugin_list").metadata;
@@ -528,9 +528,10 @@
                                 oauth_nonce: $cordovaOauthUtility.createNonce(10),
                                 oauth_signature_method: "HMAC-SHA1",
                                 oauth_timestamp: Math.round((new Date()).getTime() / 1000.0),
-                                oauth_version: "1.0"
+                                oauth_version: "1.0",
+                                oauth_token: accessToken
                             };
-                            var signatureObj = $cordovaOauthUtility.createSignature("POST", "https://api.twitter.com/oauth/request_token", oauthObject,  { oauth_callback: "http://localhost/callback" }, clientSecret);
+                            var signatureObj = $cordovaOauthUtility.createSignature("POST", "https://api.twitter.com/oauth/request_token", oauthObject,  { oauth_callback: "http://localhost/callback" }, clientSecret, accessSecret);
                             $http({
                                 method: "post",
                                 url: "https://api.twitter.com/oauth/request_token",
